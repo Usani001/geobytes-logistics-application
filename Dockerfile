@@ -3,7 +3,7 @@
 #RUN mvn clean package -DskipTests
 
 FROM openjdk:17
-COPY target/geobyte-logistics-app-0.0.1-SNAPSHOT.jar geobyte-app.jar
+COPY --from=build /target/geobyte-logistics-app-0.0.1-SNAPSHOT.jar geobyte-app.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "geobyte-app.jar"]
 
