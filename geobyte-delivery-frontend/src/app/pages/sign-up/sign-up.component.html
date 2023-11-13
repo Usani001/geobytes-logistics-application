@@ -1,0 +1,64 @@
+<div class="card card-body container mt-5 w-50">
+  <h4 class="text-center text-primary mb-4">Sign up to continue!</h4>
+  <div class="mb-3">
+    <label for="" class="form-label">First name</label>
+    <input
+      type="text"
+      class="form-control"
+      name=""
+      id=""
+      placeholder="Input Name"
+      #firstNameRef
+    />
+  </div>
+
+  <div class="mb-3">
+    <label for="" class="form-label">Last name</label>
+    <input
+      type="text"
+      class="form-control"
+      name=""
+      id=""
+      placeholder="Input Name"
+      #lastNameRef
+    />
+  </div>
+  <div class="mb-3">
+    <label for="" class="form-label">Email</label>
+    <input
+      type="email"
+      class="form-control"
+      name=""
+      id=""
+      placeholder="Input Email"
+      #emailRef
+    />
+  </div>
+  <div class="mb-3">
+    <label for="" class="form-label">Password</label>
+    <input
+      type="password"
+      class="form-control"
+      name=""
+      id=""
+      placeholder="Input password"
+      #passwordRef
+    />
+  </div>
+
+  <div class="d-flex justify-content-center">
+    <button
+      class="btn btn-primary w-100"
+      (click)="
+        doSignUp(
+          firstNameRef.value,
+          lastNameRef.value,
+          emailRef.value,
+          passwordRef.value
+        )
+      "
+    >
+      Register
+    </button>
+  </div>
+</div>
