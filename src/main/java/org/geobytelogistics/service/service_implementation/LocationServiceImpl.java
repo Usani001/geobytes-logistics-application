@@ -1,37 +1,90 @@
-//package org.geobytelogistics.service.service_implementation;
-//
-//import lombok.RequiredArgsConstructor;
-//import org.geobytelogistics.dto.response.ApiResponse;
-//import org.geobytelogistics.dto.response.LocationResponse;
-//import org.geobytelogistics.entities.Location;
-//import org.geobytelogistics.repository.LocationRepository;
-//import org.springframework.http.HttpStatus;
-//import org.springframework.stereotype.Service;
-//
-//import java.util.List;
-//import java.util.Optional;
-//
-//@Service
-//@RequiredArgsConstructor
-//public class LocationServiceImpl {
-//    private LocationRepository locationRepository;
-//
-//    public ApiResponse<List<LocationResponse>> getAllLocations() {
-//       List<Location> locations = locationRepository.findAll();
-//       return new ApiResponse<>("00","", HttpStatus.FOUND);
-//    }
-//
-//    public  addLocation(DeliveryLocation location) {
-//        return locationRepository.save(location);
-//    }
-//
-//    public void removeLocation(Long locationId) {
-//        locationRepository.deleteById(locationId);
-//    }
-//
-//    public DeliveryLocation updateLocation(Long locationId, DeliveryLocation updatedLocation) {
-//        // Implement update logic
-//        return locationRepository.save(updatedLocation);
+package org.geobytelogistics.service.service_implementation;
+
+import lombok.RequiredArgsConstructor;
+import org.geobytelogistics.dto.request.LocationRequest;
+import org.geobytelogistics.dto.response.ApiResponse;
+import org.geobytelogistics.dto.response.LocationResponse;
+import org.geobytelogistics.entities.Location;
+import org.geobytelogistics.repository.LocationRepository;
+import org.geobytelogistics.service.LocationServices;
+import org.geobytelogistics.utils.EntityMapper;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+
+import java.util.List;
+import java.util.Optional;
+
+
+@Service
+@RequiredArgsConstructor
+public class LocationServiceImpl implements LocationServices {
+    private final LocationRepository locationRepository;
+    private final EntityMapper entityMapper;
+
+    // View a list of delivery locations
+    public List<ApiResponse<Location>> getAllLocations() {
+        List<Location> locations = locationRepository.findAll();
+        List<ApiResponse<Location>> responseList = new ArrayList<>();
+
+        if (locations.isEmpty()) {
+            return responseList;
+        }
+
+        for (Location location : locations) {
+            ApiResponse<Location> response = new ApiResponse<>("00","",location, "Locations retrieved successfully");
+            responseList.add(response);
+        }
+
+        return responseList;
+    }
+
+
+    // Add Delivery Locations
+    public ApiResponse<LocationResponse>  addLocation(LocationRequest request) {
+        Location location = Location.builder()
+                .locationName(request.getLocationName())
+                .latitude(request.getLatitude())
+                .longitude(request.getLongitude())
+                .build();
+        locationRepository.save(location);
+
+        return new ApiResponse<>("00","Delivery location has been added successfully",entityMapper.locationResponse(),"Success");
+    }
+
+
+    // Remove Delivery Location
+    public ApiResponse<LocationResponse> removeLocation(LocationRequest request){
+        Optional<Location> optionalLocation = locationRepository.findById(request.getId());
+        if (optionalLocation.isPresent()) {
+            locationRepository.deleteById(request.getId());
+            return new ApiResponse<>("00","Delivery location with delivery ID {} "
+                    +request.getId()+" has successfully been deleted",null,"Success");
+        }
+        return new ApiResponse<>("01","Delivery location with delivery ID {} "
+                +request.getId()+" cannot be found",null,"Failed");
+
+
+
+    }
+
+    // Update Delivery Location
+    public ApiResponse<LocationResponse> updateLocation(LocationRequest request){
+        Optional<Location> optionalLocation = locationRepository.findById(request.getId());
+        if (optionalLocation.isPresent()) {
+            Location location = Location.builder()
+                    .locationName(request.getLocationName())
+                    .longitude(request.getLongitude())
+                    .latitude(request.getLatitude())
+                    .build();
+            locationRepository.save(location);
+            return new ApiResponse<>("00","Delivery location with delivery ID {} "
+                    +request.getId()+" has successfully been updated",entityMapper.locationResponse(),"Success");
+        }
+        return new ApiResponse<>("01","Delivery location with delivery ID {} "
+                +request.getId()+" cannot be found",null,"Failed");
+    }
+
 //    }
 //
 //    public List<DeliveryLocation> calculateOptimalRoute(Long originId, Long destinationId) {
@@ -101,4 +154,4 @@
 //
 //        return optimalRoute;
 //    }
-//}
+}

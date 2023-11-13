@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-@ControllerAdvice
 public class AuthController {
 
 
@@ -28,18 +27,14 @@ public class AuthController {
 
         @PostMapping("/register")
         public ResponseEntity<ApiResponse<?>> registerUser(@RequestBody @Validated UserRequest request) {
-            try {
                 ApiResponse<UserResponse> response = userServices.registerUser(request);
-                return ResponseEntity.status(HttpStatus.CREATED).body(response);
-            }catch (UserExistException e){
-                return ResponseEntity.status(e.getHttpStatus()).body(new ApiResponse<>(e.getMessage()));
-            }
+                return ResponseEntity.ok(response);
+
         }
 
         @PostMapping("/login")
         public ResponseEntity<ApiResponse<?>> loginUser(@RequestBody UserRequest request,
                                                                    HttpServletRequest httpRequest) {
-
                 ApiResponse<UserResponse> response = userServices.loginUser(request, httpRequest);
                 return ResponseEntity.ok(response);
 

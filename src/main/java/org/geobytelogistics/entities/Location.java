@@ -16,13 +16,13 @@ public class Location {
     @Id
     private Long id;
 
-    @Column()
+    @Column(nullable = false)
     private String locationName;
 
-    @Column()
+    @Column(nullable = false)
     private double latitude;
 
-    @Column()
+    @Column(nullable = false)
     private double longitude;
 
 
