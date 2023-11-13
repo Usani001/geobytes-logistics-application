@@ -10,9 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LocationRequest {
-    @NotNull(message = "Please provide Location ID")
-    private Long id;
-
+    
     @NotBlank(message = "Please provide the name of the Location")
     private String locationName;
 
