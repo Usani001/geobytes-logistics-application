@@ -10,7 +10,7 @@ import java.util.List;
 public interface LocationServices {
     List<ApiResponse<Location>> getAllLocations();
     ApiResponse<LocationResponse>  addLocation(LocationRequest request);
-    ApiResponse<LocationResponse> removeLocation(LocationRequest request);
-    ApiResponse<LocationResponse> updateLocation(LocationRequest request);
+    ApiResponse<LocationResponse> removeLocation(Long locationId);
+    ApiResponse<LocationResponse> updateLocation(Long locationId, LocationRequest request);
 
 }

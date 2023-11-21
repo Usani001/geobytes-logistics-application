@@ -31,15 +31,15 @@ public class LocationController {
             return ResponseEntity.ok(response);
         }
 
-        @DeleteMapping("/remove-location")
-        public ResponseEntity<ApiResponse<LocationResponse>> removeLocation(@RequestBody @Validated LocationRequest request) {
-            ApiResponse<LocationResponse> response = locationServices.removeLocation(request);
+        @DeleteMapping("/remove-location/{locationId}")
+        public ResponseEntity<ApiResponse<LocationResponse>> removeLocation(@PathVariable Long locationId) {
+            ApiResponse<LocationResponse> response = locationServices.removeLocation(locationId);
             return ResponseEntity.ok(response);
         }
 
         @PutMapping("/update-location")
-        public ResponseEntity<ApiResponse<LocationResponse>> updateLocation(@RequestBody @Validated LocationRequest request) {
-            ApiResponse<LocationResponse> response = locationServices.updateLocation(request);
+        public ResponseEntity<ApiResponse<LocationResponse>> updateLocation(@RequestParam("locationId") Long locationId,@RequestBody @Validated LocationRequest request) {
+            ApiResponse<LocationResponse> response = locationServices.updateLocation(locationId, request);
             return ResponseEntity.ok(response);
         }
 

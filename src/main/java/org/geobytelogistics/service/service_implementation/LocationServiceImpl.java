@@ -54,23 +54,23 @@ public class LocationServiceImpl implements LocationServices {
 
 
     // Remove Delivery Location
-    public ApiResponse<LocationResponse> removeLocation(LocationRequest request){
-        Optional<Location> optionalLocation = locationRepository.findById(request.getId());
+    public ApiResponse<LocationResponse> removeLocation(Long locationId){
+        Optional<Location> optionalLocation = locationRepository.findById(locationId);
         if (optionalLocation.isPresent()) {
-            locationRepository.deleteById(request.getId());
+            locationRepository.deleteById(locationId);
             return new ApiResponse<>("00","Delivery location with delivery ID {} "
-                    +request.getId()+" has successfully been deleted",null,"Success");
+                    +locationId+" has successfully been deleted",null,"Success");
         }
         return new ApiResponse<>("01","Delivery location with delivery ID {} "
-                +request.getId()+" cannot be found",null,"Failed");
+                +locationId+" cannot be found",null,"Failed");
 
 
 
     }
 
     // Update Delivery Location
-    public ApiResponse<LocationResponse> updateLocation(LocationRequest request){
-        Optional<Location> optionalLocation = locationRepository.findById(request.getId());
+    public ApiResponse<LocationResponse> updateLocation(Long locationId, LocationRequest request){
+        Optional<Location> optionalLocation = locationRepository.findById(locationId);
         if (optionalLocation.isPresent()) {
             Location location = Location.builder()
                     .locationName(request.getLocationName())
@@ -79,10 +79,10 @@ public class LocationServiceImpl implements LocationServices {
                     .build();
             locationRepository.save(location);
             return new ApiResponse<>("00","Delivery location with delivery ID {} "
-                    +request.getId()+" has successfully been updated",entityMapper.locationResponse(),"Success");
+                    +locationId+" has successfully been updated",entityMapper.locationResponse(),"Success");
         }
         return new ApiResponse<>("01","Delivery location with delivery ID {} "
-                +request.getId()+" cannot be found",null,"Failed");
+                +locationId+" cannot be found",null,"Failed");
     }
 
 //    }
